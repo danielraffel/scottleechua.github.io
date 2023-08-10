@@ -46,6 +46,7 @@ In this walkthrough, I outline the whole process of setting up **each and every 
 4. [Configure Ghost](#4-configure-ghost)
 5. [Finish Cloudflare configuration](#5-finish-cloudflare-configuration)
 6. [Create update script](#6-create-update-script)
+7. [Create cron job](#7-create-cron-job)
 
 The whole thing takes 1-2 hours depending on your comfort level with the various technologies.
 
@@ -427,6 +428,29 @@ The whole thing takes 1-2 hours depending on your comfort level with the various
 
    Note that `ghost backup` requires your Ghost admin credentials.
 
+### 7. Create cron job
+1. To restart Ghost if the server reboots switch to `service_account`:
+
+   ```
+   su - service_account
+   ```
+
+2. Open your crontab file:
+
+   ```
+   crontab -e
+   ```
+Note you may be asked to select an editor to continue.  Select your preference, you can change this later by running 'select-editor'.
+
+3. Add the following line and save the file:
+
+   ```
+   @reboot cd /var/www/ghost && /usr/bin/ghost start
+   ```
+
+Note if you want to test it you can type 'sudo reboot' and the server will reboot and your site should come back online.
+   
+
 ### Congratulations!
 At this point you should have a working self-hosted Ghost blog. Updates aside, you should be working from the `https://ghostblog.com/ghost` control panel from now on.
 
@@ -437,6 +461,8 @@ This walkthrough last worked for me in **August 2023**. If you spot errors, vuln
 
 ## Changelog
 
+- **2023-08**: Added a cron job.
+- 
 - **2023-08**: Revise instructions to set MySQL root password. Thanks to [Shehroz Alam on Linuxhint](https://linuxhint.com/change-mysql-root-password-ubuntu/).
 
 - **2023-05**: Add update Ghost CLI command to `update-ghost.sh`.
